@@ -31,6 +31,13 @@ function openCard() {
                 animationController.flipOff(currentCard,previousCard);
             }, 500)
             pointValue-=500;
+            if(pointValue<=0){
+                point.visibility='hidden';
+                let message = new Label('Bạn đã thua', 50, "red");
+                message.positionX = 100;
+                message.positionY = 300;
+                message.draw()
+            }
         } else {
             if (currentCard === previousCard) {
                 animationController.flipOff(currentCard,previousCard);
