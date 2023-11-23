@@ -31,10 +31,10 @@ export class GameController {
         point.positionY = 5;
         this.game.addChildLabel(point);
         this.game.draw();
-        this.animationController.distributeCard(this.game.childrenSprite,this.isStart);
+        this.animationController.distributeCard(this.game.childrenSprite);
         setTimeout(() => {
             this.isStart = true;
-        }, 4200)
+        }, 4300)
     }
 
     openCard(event) {
@@ -44,18 +44,18 @@ export class GameController {
             if (this.stackCard.length == 0) {
                 this.stackCard.push(currentCard);
             } else {
-                this.isStart=false;
+                this.isStart = false;
                 let previousCard = this.game.childrenSprite.find((card) => card == this.stackCard[0]);
                 if (previousCard.srcResult != currentCard.srcResult) {
                     setTimeout(() => {
                         this.animationController.flipOff(currentCard, previousCard);
                     }, 500)
                     setTimeout(() => {
-                        this.isStart=true;
+                        this.isStart = true;
                     }, 2000)
                     this.pointValue -= 500;
                     if (this.pointValue <= 0) {
-                        this.point.visibility = 'hidden';
+                        this.game.childrenLabel[0].visibility = 'hidden';
                         let message = new Label('Bạn đã thua thua!!!', 50, "red");
                         message.positionX = 100;
                         message.positionY = 300;
@@ -65,7 +65,7 @@ export class GameController {
                     if (currentCard === previousCard) {
                         this.animationController.flipOff(currentCard, previousCard);
                         setTimeout(() => {
-                            this.isStart=true;
+                            this.isStart = true;
                         }, 2000)
                         this.pointValue -= 500;
                     } else {
@@ -73,7 +73,7 @@ export class GameController {
                             this.animationController.zoomOut(currentCard, previousCard);
                         }, 500)
                         setTimeout(() => {
-                            this.isStart=true;
+                            this.isStart = true;
                         }, 2000)
                         this.countResult++;
                         this.pointValue += 1000;
@@ -83,7 +83,7 @@ export class GameController {
             }
             this.game.childrenLabel[0].text = "$" + this.pointValue;
             if (this.countResult == 10) {
-                point.visibility = 'hidden';
+                this.game.childrenLabel[0].visibility = 'hidden';
                 let message = new Label('Bạn đã hoàn thành trò chơi với số điểm ' + this.pointValue, 50, "red");
                 message.positionX = 100;
                 message.positionY = 300;

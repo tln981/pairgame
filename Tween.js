@@ -22,7 +22,7 @@ export class Tween {
         gsap.to(object2.element, { scale: 2, opacity: 0, duration, delay: duration * 2, onComplete: () => object2.visibility = 'hidden' });
     }
 
-    distributeCard(cards, isStart) {
+    distributeCard(cards) {
         const duration = 0.2;
         cards.forEach((card, index) => {
             let tempX = card.positionX;
