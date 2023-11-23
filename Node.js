@@ -35,6 +35,8 @@ export class Node {
         this._src = value;
         this.element.src = this._src;
     }
+    
+
 
     addChildSprite(childNode) {
         this.childrenSprite.push(childNode);

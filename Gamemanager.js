@@ -3,88 +3,88 @@ import { Sprite } from "./Sprite.js";
 import { Label } from "./Label.js";
 import { Tween } from "./Tween.js";
 
-
-let fileImages=['./assets/0.jpg','./assets/1.jpg','./assets/2.jpg','./assets/3.jpg','./assets/4.jpg','./assets/5.jpg','./assets/6.jpg','./assets/7.jpg','./assets/8.jpg','./assets/9.jpg','./assets/cover.jpg','./assets/BackGround.jpg',]
-const preloadedImages = preloadImages(fileImages);
-
-
-let stackCard=[];
-let game = new Node();
-let animationController=new Tween()
-let countResult=0;
-let pointValue=10000;
-createCard(game);
-game.childrenSprite.forEach((card)=>card.element.addEventListener('click',openCard));
-//game.shuffleCard();
-let point=new Label("$"+pointValue);
-point.positionX=1050;
-point.positionY=5;
-game.addChildLabel(point);
-game.draw();
-animationController.distributeCard(game.childrenSprite);
-
-
-function openCard() {
-    let currentCard = game.childrenSprite.find((card) => card.element == this);
-    animationController.flip(currentCard);
-    if (stackCard.length == 0) {
-        stackCard.push(currentCard);
-    } else {
-        let previousCard = game.childrenSprite.find((card) => card == stackCard[0]);
-        if (previousCard.srcResult != currentCard.srcResult) {
-            setTimeout(() => {
-                animationController.flipOff(currentCard,previousCard);
-            }, 500)
-            pointValue-=500;
-            if(pointValue<=0){
-                point.visibility='hidden';
-                let message=new Label('Bạn đã thua thu!!!',50,"red");
-                message.positionX=100;
-                message.positionY=300;
-                message.draw()
-            }
-        } else {
-            if (currentCard === previousCard) {
-                animationController.flipOff(currentCard,previousCard);
-                pointValue-=500;
-            } else {
-                setTimeout(() => {
-                    animationController.zoomOut(currentCard,previousCard);
-                }, 500)
-                countResult++;
-                pointValue+=1000;
-            }
-        }
-        stackCard.pop();
+export class GameController{
+    constructor(){
+        this.stackCard=[];
+        this.game = new Node();
+        this.animationController=new Tween()
+        this.countResult=0;
+        this.pointValue=10000;
     }
-    point.text="$"+pointValue;
-    if(countResult==10){
-        point.visibility='hidden';
-        let message=new Label('Bạn đã hoàn thành trò chơi với số điểm '+pointValue,50,"red");
-        message.positionX=100;
-        message.positionY=300;
-        message.draw()
+
+
+    createCard() {
+        let paramPositionX = 0;
+        let paramPositionY = -1;
+        for (let indexCard = 0; indexCard < 20; indexCard++) {
+            paramPositionX = indexCard % 5;
+            paramPositionY = indexCard % 5 === 0 ? paramPositionY + 1 : paramPositionY;
+            let card = new Sprite((145 * paramPositionX) + 10, (paramPositionY * 165) + 5, './assets/cover.jpg');
+            card.srcResult = "./assets/" + Math.floor(indexCard / 2) + ".jpg";
+            this.game.addChildSprite(card);
+        }
+        this.game.childrenSprite.forEach((card)=>card.element.addEventListener('click',(event)=>this.openCard(event)));
+        //this.game.shuffleCard();
+        let point=new Label("$"+this.pointValue);
+        point.positionX=1050;
+        point.positionY=5;
+        this.game.addChildLabel(point);
+        this.game.draw();
+        this.animationController.distributeCard(this.game.childrenSprite);
+        console.log(this.game);
+    }
+
+    openCard(event) {
+        console.log(this.game)
+        let currentCard = this.game.childrenSprite.find((card) => card.element == event.currentTarget);
+        this.animationController.flip(currentCard);
+        if (this.stackCard.length == 0) {
+            this.stackCard.push(currentCard);
+        } else {
+            let previousCard = this.game.childrenSprite.find((card) => card == this.stackCard[0]);
+            if (previousCard.srcResult != currentCard.srcResult) {
+                setTimeout(() => {
+                    this.animationController.flipOff(currentCard,previousCard);
+                }, 500)
+                this.pointValue-=500;
+                if(this.pointValue<=0){
+                    this.point.visibility='hidden';
+                    let message=new Label('Bạn đã thua thua!!!',50,"red");
+                    message.positionX=100;
+                    message.positionY=300;
+                    message.draw()
+                }
+            } else {
+                if (currentCard === previousCard) {
+                    this.animationController.flipOff(currentCard,previousCard);
+                    this.pointValue-=500;
+                } else {
+                    setTimeout(() => {
+                        this.animationController.zoomOut(currentCard,previousCard);
+                    }, 500)
+                    this.countResult++;
+                    this.pointValue+=1000;
+                }
+            }
+            this.stackCard.pop();
+        }
+        this.game.childrenLabel[0].text="$"+this.pointValue;
+        if(this.countResult==10){
+            point.visibility='hidden';
+            let message=new Label('Bạn đã hoàn thành trò chơi với số điểm '+this.pointValue,50,"red");
+            message.positionX=100;
+            message.positionY=300;
+            message.draw()
+        }
     }
     
 }
-function createCard(game) {
-    let paramPositionX = 0;
-    let paramPositionY = -1;
-    for (let indexCard = 0; indexCard < 20; indexCard++) {
-        paramPositionX = indexCard % 5;
-        paramPositionY = indexCard % 5 === 0 ? paramPositionY + 1 : paramPositionY;
-        let card = new Sprite((145 * paramPositionX) + 10, (paramPositionY * 165) + 5, './assets/cover.jpg');
-        card.srcResult = "./assets/" + Math.floor(indexCard / 2) + ".jpg";
-        game.addChildSprite(card);
-    }
-}
 
-function preloadImages(urls) {
-    const images = [];
-    for (let i = 0; i < urls.length; i++) {
-      const img = new Image();
-      img.src = urls[i];
-      images.push(img);
-    }
-    return images;
-  }
+
+
+
+
+
+
+
+
