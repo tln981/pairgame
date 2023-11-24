@@ -33,4 +33,15 @@ export class Tween {
             gsap.to(card.element, { rotation: 720, duration, delay: duration * (index + 1) });
         });
     }
+    collectCard(cards){
+        const duration = 1.5;
+        cards.forEach((card) => {
+            gsap.to(card, { positionX: 735, positionY: 500, duration,onComplete:()=>this.deleteCard(card)});
+            gsap.to(card.element, { rotation: 0, duration});
+        });
+    }
+    deleteCard(card){
+        const duration=1;
+        gsap.to(card.element, { opacity: 0, duration});
+    }
 }

@@ -35,7 +35,7 @@ export class Node {
         this._src = value;
         this.element.src = this._src;
     }
-    
+
 
 
     addChildSprite(childNode) {
@@ -45,6 +45,7 @@ export class Node {
     removeChildSprite(childNode) {
         const index = this.childrenSprite.indexOf(childNode);
         if (index !== -1) {
+            document.body.removeChild(childNode.element)
             this.childrenSprite.splice(index, 1);
         }
     }
@@ -67,12 +68,8 @@ export class Node {
         element.style.top = this._positionY + 'px';
         element.style.width = this._width + 'px';
         element.style.height = this._height + 'px';
-        //element.style.backgroundColor='rgba(0, 0, 0)';
         return element;
     }
-
-    
-
     shuffleCard() {
         let valueCards = ['0', '0', '1', '1', '2', '2', '3', '3', '4', '4', '5', '5', '6', '6', '7', '7', '8', '8', '9', '9']
         this.childrenSprite.forEach(card => {
@@ -82,12 +79,7 @@ export class Node {
             //card.active=false;
         });
     }
-
     draw() {
         document.body.appendChild(this.element);
-        //if(this.isPlay==true) 
-        this.childrenSprite.forEach(child => { child.draw() })
-        this.childrenLabel.forEach(child => { child.draw() })
     }
 }
-

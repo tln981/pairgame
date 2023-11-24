@@ -1,5 +1,5 @@
-import { GameController } from "./Gamemanager.js";
-let fileImages=['./assets/0.jpg','./assets/1.jpg','./assets/2.jpg','./assets/3.jpg','./assets/4.jpg','./assets/5.jpg','./assets/6.jpg','./assets/7.jpg','./assets/8.jpg','./assets/9.jpg','./assets/cover.jpg','./assets/BackGround.jpg',]
+import { GameController } from "./GameController.js";
+let fileImages = ['./assets/0.jpg', './assets/1.jpg', './assets/2.jpg', './assets/3.jpg', './assets/4.jpg', './assets/5.jpg', './assets/6.jpg', './assets/7.jpg', './assets/8.jpg', './assets/9.jpg', './assets/cover.jpg', './assets/BackGround.jpg',]
 
 
 function preloadImages(urls) {
@@ -11,8 +11,6 @@ function preloadImages(urls) {
     }
     return images;
 }
-let game=new GameController();
-const preloadedImages = preloadImages(fileImages,() => {
-    game.createCard();
-  });
-game.createCard();
+let game = new GameController();
+const prelodedImages = preloadImages(fileImages);
+game.draw();

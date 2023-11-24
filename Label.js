@@ -38,6 +38,8 @@ export class Label extends Node{
         element.style.color=this._color;
         return element;
     }
-
+    draw(){
+        document.body.appendChild(this.element);
+    }
 
 }
